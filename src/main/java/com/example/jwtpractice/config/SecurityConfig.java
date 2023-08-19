@@ -10,10 +10,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.List;
 
@@ -24,7 +26,12 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
+        return new MvcRequestMatcher.Builder(introspector);
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http
                 // 인증에서 JWT를 사용할 것이므로 HttpSession을 사용하지 않는다.
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
@@ -48,18 +55,15 @@ public class SecurityConfig {
                                 .disable()
                 )
                 // 요청이 왔을 때 인증 처리 방법 지정
-                .authorizeHttpRequests(httpRequest ->
-                        httpRequest
-                                // 실제 데이터 요청 전 브라우저가 서버로 보내는 사전 검사 요청 모두 허용
+                .authorizeHttpRequests((authorizeHttpRequest) ->
+                        authorizeHttpRequest
+//                                // 실제 데이터 요청 전 브라우저가 서버로 보내는 사전 검사 요청 모두 허용
                                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                                // 항상 허용할 주소 지정
-                                .requestMatchers("/members/signup", "/members/login", "/members/refreshToken").permitAll()
-                                // GET 요청시 항상 허용할 주소 지정
-                                .requestMatchers(HttpMethod.GET, "/categories/**", "/products/**").permitAll()
-                                // 주소 권한 지정
-                                .requestMatchers(HttpMethod.GET, "/**").hasAnyRole("USER")
-                                .requestMatchers(HttpMethod.POST, "/**").hasAnyRole("USER", "ADMIN")
-                                .anyRequest().hasAnyRole("USER", "ADMIN"))
+                                .requestMatchers(mvc.pattern("/members/signup"), mvc.pattern("/members/login"), mvc.pattern("/members/refreshToken") ).permitAll()
+                                .requestMatchers(mvc.pattern("/categories/**"), mvc.pattern("/products/**")).permitAll()
+                                .requestMatchers(mvc.pattern("/**")).hasAnyRole("USER")
+                                .anyRequest().hasAnyRole("USER", "ADMIN")
+                )
                 // 인증이 필요한 리소스에 인증되지 않은 사용자가 접근시 처리 방법 지정
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer ->
                         httpSecurityExceptionHandlingConfigurer
