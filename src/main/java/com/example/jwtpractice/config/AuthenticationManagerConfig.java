@@ -1,5 +1,6 @@
 package com.example.jwtpractice.config;
 
+import com.example.jwtpractice.security.jwt.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
