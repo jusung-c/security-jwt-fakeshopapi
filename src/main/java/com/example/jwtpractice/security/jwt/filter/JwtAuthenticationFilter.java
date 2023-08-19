@@ -1,6 +1,7 @@
 package com.example.jwtpractice.security.jwt.filter;
 
 import com.example.jwtpractice.security.jwt.exception.JwtExceptionCode;
+import com.example.jwtpractice.security.jwt.token.JwtAuthenticationToken;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;

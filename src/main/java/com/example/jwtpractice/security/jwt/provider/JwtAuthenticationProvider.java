@@ -1,6 +1,7 @@
 package com.example.jwtpractice.security.jwt.provider;
 
 import com.example.jwtpractice.security.jwt.token.JwtAuthenticationToken;
+import com.example.jwtpractice.security.jwt.util.JwtTokenizer;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -24,7 +25,10 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         // 토큰 검증 (기간이 만료되었는지, 토큰 문자열이 문제가 있는지 등)
         Claims claims = jwtTokenizer.parseAccessToken(authenticationToken.getToken());
 
-        // sub에 암호화된 데이터를 집어넣고 복호화하는 코드를 넣어줄 수 있다.
+        // sub를 암호화해서 넣었다면 여기서 복호화하는 코드가 필요하다
+        // ...
+
+        // 토큰에서 정보 추출
         String email = claims.getSubject();
         Long memberId = claims.get("memberId", Long.class);
         String name = claims.get("name", String.class);
