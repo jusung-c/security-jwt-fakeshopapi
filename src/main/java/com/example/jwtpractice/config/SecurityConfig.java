@@ -75,9 +75,13 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         // CORS 관련 설정을 담기 위한 클래스
         CorsConfiguration config = new CorsConfiguration();
+        // 모든 오리진(도메인)에서 온 요청을 허용
         config.addAllowedOrigin("*");
+        // 모든 HTTP 메서드를 허용
         config.addAllowedMethod("*");
-        config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PATCH", "OPTION", "PUT"));
+        // 허용된 HTTP 메서드 목록 설정
+        config.setAllowedMethods(List.of("GET", "POST", "DELETE", "PATCH", "OPTIONS", "PUT"));
+        // config 등록
         source.registerCorsConfiguration("/**", config);
 
         return source;
