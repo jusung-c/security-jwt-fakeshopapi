@@ -1,5 +1,6 @@
 package com.example.jwtpractice.config;
 
+import com.example.jwtpractice.security.jwt.exception.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
