@@ -29,7 +29,7 @@ public class Member {
     private String name;
 
     @JsonIgnore // JSON 직렬화 or 역직렬화 시 해당 필드 무시
-    @Column(length = 50)
+    @Column(length = 70)
     private String password;
 
     @CreationTimestamp

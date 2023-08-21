@@ -6,6 +6,7 @@ import com.example.jwtpractice.dto.MemberLoginResponseDto;
 import com.example.jwtpractice.dto.MemberSignupDto;
 import com.example.jwtpractice.dto.MemberSignupResponseDto;
 import com.example.jwtpractice.security.jwt.util.JwtTokenizer;
+import com.example.jwtpractice.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,8 @@ public class MemberController {
         memberSignupResponse.setName(saveMember.getName());
         memberSignupResponse.setRegdate(saveMember.getRegdate());
         memberSignupResponse.setEmail(saveMember.getEmail());
+
+        System.out.println("MemberController.signup");
 
         // 회원가입
         return new ResponseEntity(memberSignupResponse, HttpStatus.CREATED);

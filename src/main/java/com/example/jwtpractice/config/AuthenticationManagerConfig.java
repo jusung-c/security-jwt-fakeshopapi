@@ -22,10 +22,8 @@ public class AuthenticationManagerConfig extends AbstractHttpConfigurer<Authenti
 
         // Jwt 필터를 Username...Filter 앞에 추가
         builder.addFilterBefore(
-                        // AuthenticationManager를 주입한 Jwt 필터 생성
                         new JwtAuthenticationFilter(authenticationManager),
                         UsernamePasswordAuthenticationFilter.class)
-                // authenticationManager가 jwt Provider를 Provider로 사용하도록 설정
                 .authenticationProvider(jwtAuthenticationProvider);
     }
 }
