@@ -3,13 +3,17 @@ package com.example.jwtpractice.security.jwt.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
+@Component
 public class JwtTokenizer {
     private final byte[] accessSecret;
     private final byte[] refreshSecret;
@@ -25,25 +29,24 @@ public class JwtTokenizer {
     /**
      * AccessToken 생성
      */
-    public String createAccessToken(Long id, String email, String name, List<String> roles) {
-        return createToken(id, email, name, roles, ACCESS_TOKEN_EXPIRE_COUNT, accessSecret);
+    public String createAccessToken(Long id, String email, List<String> roles) {
+        return createToken(id, email, roles, ACCESS_TOKEN_EXPIRE_COUNT, accessSecret);
     }
 
     /**
      * RefreshToken 생성
      */
-    public String createRefreshToken(Long id, String email, String name, List<String> roles) {
-        return createToken(id, email, name, roles, REFRESH_TOKEN_EXPIRE_COUNT, refreshSecret);
+    public String createRefreshToken(Long id, String email, List<String> roles) {
+        return createToken(id, email, roles, REFRESH_TOKEN_EXPIRE_COUNT, refreshSecret);
     }
 
 
-    private String createToken(Long id, String email, String name, List<String> roles,
+    private String createToken(Long id, String email, List<String> roles,
                                Long expire, byte[] secretKey) {
         Claims claims = Jwts.claims().setSubject(email);
 
         claims.put("roles", roles);
         claims.put("memberId", id);
-        claims.put("name", name);
 
         return Jwts.builder()
                 .setClaims(claims)

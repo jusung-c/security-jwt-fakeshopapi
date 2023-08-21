@@ -2,6 +2,7 @@ package com.example.jwtpractice.security.jwt.provider;
 
 import com.example.jwtpractice.security.jwt.token.JwtAuthenticationToken;
 import com.example.jwtpractice.security.jwt.util.JwtTokenizer;
+import com.example.jwtpractice.security.jwt.util.LoginInfoDto;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -52,5 +53,12 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             authorities.add(() -> role);
         }
         return authorities;
+    }
+
+    // JwtAuthenticationToken을 지원하는지 판단
+    @Override
+    public boolean supports(Class<?> authentication) {
+        // authentication 객체가 JwtAuthenticationToken로부터 상속받은 객체인지 판단
+        return JwtAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }
