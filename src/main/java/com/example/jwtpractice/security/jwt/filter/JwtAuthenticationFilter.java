@@ -91,7 +91,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer")) {
             // 그렇다면 토큰값 추출
             String[] arr = authorization.split(" ");
-            return arr[2];
+            return arr[1];
         }
         return null;
     }

@@ -24,4 +24,20 @@ public class MemberService {
         Member saveMember = memberRepository.save(member);
         return saveMember;
     }
+
+    @Transactional(readOnly = true)
+    public Member findByEmail(String email){
+        return memberRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다."));
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Member> getMember(Long memberId){
+        return memberRepository.findById(memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<Member> getMember(String email){
+        return memberRepository.findByEmail(email);
+    }
+
 }
